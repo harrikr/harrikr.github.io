@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Harri Kurniawan — Web & Mobile Developer</title>
+<meta name="description" content="Harri Kurniawan, Web & Mobile Developer di Kalibeber, Wonosobo, dan pendiri SYVA Software Studio.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0d1210;
+    --bg-alt:#111713;
+    --surface:#161f1a;
+    --surface-2:#1b2620;
+    --border:#28352d;
+    --text:#edede3;
+    --text-muted:#94a19a;
+    --accent:#7fbe9f;
+    --accent-soft:#7fbe9f22;
+    --accent-2:#d9a857;
+    --font-display:'Space Grotesk', sans-serif;
+    --font-body:'IBM Plex Sans', sans-serif;
+    --font-mono:'IBM Plex Mono', monospace;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  html{ scroll-behavior:smooth; }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    *{ animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; }
+  }
+
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--font-body);
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+
+  a{ color:inherit; text-decoration:none; }
+  ul{ list-style:none; }
+  img,svg{ display:block; max-width:100%; }
+
+  .wrap{
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 32px;
+  }
+
+  ::selection{ background:var(--accent); color:#0d1210; }
+
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--accent);
+    outline-offset:3px;
+    border-radius:2px;
+  }
+
+  /* ---------- Contour texture ---------- */
+  .contours{
+    position:absolute;
+    inset:0;
+    z-index:0;
+    opacity:0.35;
+    pointer-events:none;
+  }
+  .contours path{
+    stroke-dasharray:6 10;
+    animation:flow 26s linear infinite;
+  }
+  .contours path:nth-child(2){ animation-duration:32s; animation-direction:reverse; }
+  .contours path:nth-child(3){ animation-duration:38s; }
+  .contours path:nth-child(4){ animation-duration:44s; animation-direction:reverse; }
+  @keyframes flow{
+    to{ stroke-dashoffset:-400; }
+  }
+
+  /* ---------- Ambient mist blobs ---------- */
+  .mist{
+    position:absolute;
+    border-radius:50%;
+    filter:blur(60px);
+    pointer-events:none;
+    z-index:0;
+  }
+  .mist-a{
+    width:420px; height:420px;
+    background:radial-gradient(circle, rgba(127,190,159,0.22), transparent 70%);
+    top:-120px; right:-80px;
+    animation:drift1 22s ease-in-out infinite;
+  }
+  .mist-b{
+    width:340px; height:340px;
+    background:radial-gradient(circle, rgba(217,168,87,0.16), transparent 70%);
+    bottom:-100px; left:-60px;
+    animation:drift2 26s ease-in-out infinite;
+  }
+  .mist-c{
+    width:300px; height:300px;
+    background:radial-gradient(circle, rgba(127,190,159,0.18), transparent 70%);
+    top:20%; left:50%;
+    animation:drift3 30s ease-in-out infinite;
+  }
+  @keyframes drift1{
+    0%,100%{ transform:translate(0,0) scale(1); }
+    50%{ transform:translate(-40px,30px) scale(1.08); }
+  }
+  @keyframes drift2{
+    0%,100%{ transform:translate(0,0) scale(1); }
+    50%{ transform:translate(30px,-25px) scale(1.05); }
+  }
+  @keyframes drift3{
+    0%,100%{ transform:translate(-50%,0) scale(1); }
+    50%{ transform:translate(-50%,-35px) scale(1.1); }
+  }
+
+  /* ---------- Scroll progress ---------- */
+  .scroll-progress{
+    position:fixed;
+    top:0; left:0;
+    height:2px;
+    width:0%;
+    background:linear-gradient(90deg, var(--accent), var(--accent-2));
+    z-index:100;
+    transition:width 0.1s ease-out;
+  }
+
+  /* ---------- Nav ---------- */
+  header{
+    position:sticky;
+    top:0;
+    z-index:50;
+    background:rgba(13,18,16,0.82);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  nav.wrap{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    height:76px;
+  }
+  .logo{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:1.15rem;
+    letter-spacing:0.02em;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .logo .dot{
+    width:8px; height:8px;
+    border-radius:50%;
+    background:var(--accent);
+    box-shadow:0 0 12px 2px var(--accent-soft);
+  }
+  .nav-links{
+    display:flex;
+    gap:36px;
+    font-size:0.92rem;
+    color:var(--text-muted);
+  }
+  .nav-links a{ transition:color 0.2s ease; position:relative; padding-bottom:4px; }
+  .nav-links a::after{
+    content:'';
+    position:absolute;
+    left:0; bottom:0;
+    width:0%;
+    height:1px;
+    background:var(--accent);
+    transition:width 0.25s ease;
+  }
+  .nav-links a:hover{ color:var(--text); }
+  .nav-links a:hover::after{ width:100%; }
+  .nav-cta{
+    font-family:var(--font-mono);
+    font-size:0.82rem;
+    padding:10px 18px;
+    border:1px solid var(--accent);
+    border-radius:4px;
+    color:var(--accent);
+    transition:background 0.2s ease, color 0.2s ease;
+    white-space:nowrap;
+  }
+  .nav-cta:hover{ background:var(--accent); color:#0d1210; }
+  .nav-toggle{
+    display:none;
+    background:none;
+    border:1px solid var(--border);
+    border-radius:4px;
+    width:40px; height:40px;
+    color:var(--text);
+    font-size:1.1rem;
+    cursor:pointer;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position:relative;
+    padding:96px 0 110px;
+    overflow:hidden;
+  }
+  .hero-grid{
+    position:relative;
+    z-index:1;
+    display:grid;
+    grid-template-columns:1.15fr 0.85fr;
+    gap:64px;
+    align-items:center;
+  }
+  .eyebrow{
+    font-family:var(--font-mono);
+    font-size:0.8rem;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:22px;
+  }
+  .eyebrow::before{
+    content:'';
+    width:22px; height:1px;
+    background:var(--accent);
+    display:inline-block;
+  }
+  h1.name{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:clamp(2.6rem, 6vw, 4.6rem);
+    line-height:1.03;
+    letter-spacing:-0.01em;
+    margin-bottom:22px;
+  }
+  h1.name span{ color:var(--accent); }
+  .hero p.lede{
+    font-size:1.08rem;
+    color:var(--text-muted);
+    max-width:520px;
+    margin-bottom:36px;
+  }
+  .hero-ctas{
+    display:flex;
+    gap:16px;
+    flex-wrap:wrap;
+  }
+  .btn{
+    font-family:var(--font-mono);
+    font-size:0.88rem;
+    padding:14px 26px;
+    border-radius:4px;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    transition:transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+  }
+  .btn-primary{
+    background:var(--accent);
+    color:#0d1210;
+    font-weight:500;
+  }
+  .btn-primary:hover{ transform:translateY(-2px); }
+  .btn-ghost{
+    border:1px solid var(--border);
+    color:var(--text);
+  }
+  .btn-ghost:hover{ border-color:var(--accent); color:var(--accent); }
+
+  /* ---------- Terminal card (signature element) ---------- */
+  .terminal{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:10px;
+    box-shadow:0 30px 60px -30px rgba(0,0,0,0.6), 0 0 0 1px rgba(127,190,159,0.04);
+    overflow:hidden;
+    animation:float 6s ease-in-out infinite;
+  }
+  @keyframes float{
+    0%,100%{ transform:translateY(0); }
+    50%{ transform:translateY(-10px); }
+  }
+  .terminal-bar{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:12px 16px;
+    background:var(--surface-2);
+    border-bottom:1px solid var(--border);
+  }
+  .terminal-bar span{
+    width:10px; height:10px;
+    border-radius:50%;
+    background:#3a4640;
+  }
+  .terminal-bar .file{
+    margin-left:8px;
+    font-family:var(--font-mono);
+    font-size:0.78rem;
+    color:var(--text-muted);
+  }
+  .terminal-body{
+    padding:22px 22px 26px;
+    font-family:var(--font-mono);
+    font-size:0.86rem;
+    min-height:230px;
+    white-space:pre-wrap;
+  }
+  .terminal-body .k{ color:var(--accent-2); }
+  .terminal-body .s{ color:var(--accent); }
+  .terminal-body .p{ color:var(--text-muted); }
+  .cursor{
+    display:inline-block;
+    width:7px; height:15px;
+    background:var(--accent);
+    vertical-align:text-bottom;
+    animation:blink 1s step-end infinite;
+  }
+  @keyframes blink{ 50%{ opacity:0; } }
+
+  /* ---------- Section shell ---------- */
+  section{ position:relative; padding:100px 0; }
+  .section-head{
+    max-width:640px;
+    margin-bottom:56px;
+  }
+  .section-head h2{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:clamp(1.8rem, 3.4vw, 2.6rem);
+    letter-spacing:-0.01em;
+  }
+
+  /* ---------- About ---------- */
+  #tentang{ border-top:1px solid var(--border); }
+  .about-grid{
+    display:grid;
+    grid-template-columns:0.9fr 1.1fr;
+    gap:64px;
+  }
+  .about-grid p{
+    color:var(--text-muted);
+    font-size:1.04rem;
+    margin-bottom:18px;
+  }
+  .about-grid p strong{ color:var(--text); font-weight:600; }
+
+  /* ---------- Focus cards ---------- */
+  .focus-list{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:1px;
+    background:var(--border);
+    border:1px solid var(--border);
+    border-radius:12px;
+    overflow:hidden;
+  }
+  .focus-card{
+    background:var(--bg-alt);
+    padding:36px 30px;
+    transition:background 0.25s ease;
+  }
+  .focus-card:hover{ background:var(--surface); }
+  .focus-card .mark{
+    font-family:var(--font-mono);
+    font-size:0.8rem;
+    color:var(--accent);
+    margin-bottom:18px;
+    display:block;
+  }
+  .focus-card h3{
+    font-family:var(--font-display);
+    font-size:1.2rem;
+    margin-bottom:12px;
+  }
+  .focus-card p{
+    color:var(--text-muted);
+    font-size:0.95rem;
+  }
+
+  /* ---------- Studio ---------- */
+  #studio{
+    background:var(--surface);
+    border-top:1px solid var(--border);
+    border-bottom:1px solid var(--border);
+    overflow:hidden;
+    position:relative;
+  }
+  .studio-inner{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:56px;
+    align-items:center;
+  }
+  .studio-mark{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:clamp(2.2rem,5vw,3.6rem);
+    letter-spacing:-0.01em;
+    line-height:1.05;
+  }
+  .studio-mark .syva{ color:var(--accent); }
+  .studio-tagline{
+    font-family:var(--font-mono);
+    font-size:0.95rem;
+    color:var(--accent-2);
+    margin:18px 0 22px;
+  }
+  .studio-inner p.desc{
+    color:var(--text-muted);
+    font-size:1.02rem;
+    margin-bottom:16px;
+  }
+  .studio-visual{
+    position:relative;
+    aspect-ratio:1/1;
+    max-height:340px;
+    border:1px solid var(--border);
+    border-radius:14px;
+    background:
+      radial-gradient(circle at 30% 30%, rgba(127,190,159,0.18), transparent 60%),
+      radial-gradient(circle at 75% 70%, rgba(217,168,87,0.14), transparent 55%),
+      var(--surface-2);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .studio-visual .glyph{
+    font-family:var(--font-mono);
+    font-size:0.82rem;
+    color:var(--text-muted);
+    text-align:center;
+    line-height:2;
+  }
+  .studio-visual .glyph b{ color:var(--accent); font-size:1.6rem; display:block; margin-bottom:6px; animation:pulseGlow 3.2s ease-in-out infinite; }
+  @keyframes pulseGlow{
+    0%,100%{ text-shadow:0 0 0px rgba(127,190,159,0); }
+    50%{ text-shadow:0 0 18px rgba(127,190,159,0.6); }
+  }
+
+  /* ---------- Location & Contact ---------- */
+  #kontak .wrap{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:64px;
+    align-items:start;
+  }
+  .geo-card{
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:32px;
+    background:var(--bg-alt);
+    position:relative;
+  }
+  .geo-card .coord{
+    font-family:var(--font-mono);
+    font-size:0.78rem;
+    color:var(--accent);
+    letter-spacing:0.05em;
+    margin-bottom:14px;
+  }
+  .geo-card h3{
+    font-family:var(--font-display);
+    font-size:1.4rem;
+    margin-bottom:10px;
+  }
+  .geo-card p{ color:var(--text-muted); font-size:0.98rem; }
+
+  .contact-links{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    margin-top:28px;
+  }
+  .contact-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:16px 20px;
+    border:1px solid var(--border);
+    border-radius:8px;
+    font-family:var(--font-mono);
+    font-size:0.88rem;
+    color:var(--text-muted);
+    transition:border-color 0.2s ease, color 0.2s ease;
+  }
+  .contact-row:hover{ border-color:var(--accent); color:var(--text); }
+  .contact-row span.arrow{ color:var(--accent); }
+
+  /* ---------- Footer ---------- */
+  footer{
+    border-top:1px solid var(--border);
+    padding:36px 0;
+  }
+  footer .wrap{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:12px;
+    font-size:0.85rem;
+    color:var(--text-muted);
+  }
+  footer .wrap .fmark{ font-family:var(--font-mono); color:var(--accent); }
+
+  /* ---------- Reveal on scroll ---------- */
+  .reveal{
+    opacity:0;
+    transform:translateY(22px);
+    transition:opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 880px){
+    .hero-grid{ grid-template-columns:1fr; gap:48px; }
+    .about-grid{ grid-template-columns:1fr; gap:28px; }
+    .focus-list{ grid-template-columns:1fr; }
+    .studio-inner{ grid-template-columns:1fr; }
+    .studio-visual{ max-height:220px; order:-1; }
+    #kontak .wrap{ grid-template-columns:1fr; gap:36px; }
+    .nav-links{ display:none; }
+    .nav-toggle{ display:block; }
+    section{ padding:72px 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<header>
+  <nav class="wrap">
+    <a href="#" class="logo"><span class="dot"></span>SYVA</a>
+    <ul class="nav-links">
+      <li><a href="#tentang">Tentang</a></li>
+      <li><a href="#fokus">Fokus</a></li>
+      <li><a href="#studio">Studio</a></li>
+      <li><a href="#kontak">Kontak</a></li>
+    </ul>
+    <a href="#kontak" class="nav-cta">Hubungi Saya</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Buka menu">☰</button>
+  </nav>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero" id="beranda">
+    <div class="mist mist-a"></div>
+    <div class="mist mist-b"></div>
+    <svg class="contours" viewBox="0 0 1180 600" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M-50,480 C 200,420 350,520 550,460 S 900,380 1250,440" stroke="#7fbe9f" stroke-width="1" fill="none"/>
+      <path d="M-50,520 C 220,460 360,560 560,500 S 920,420 1250,480" stroke="#7fbe9f" stroke-width="1" fill="none"/>
+      <path d="M-50,560 C 240,500 370,600 570,540 S 940,460 1250,520" stroke="#7fbe9f" stroke-width="1" fill="none"/>
+      <path d="M-50,440 C 180,380 340,480 540,420 S 880,340 1250,400" stroke="#d9a857" stroke-width="1" fill="none" opacity="0.5"/>
+    </svg>
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow">Web &amp; Mobile Developer · Kalibeber, Wonosobo</p>
+        <h1 class="name">Selamat <span>Datang!</span></h1>
+        <p class="lede">Saya membangun pengalaman digital dari dataran tinggi Wonosobo — memadukan kreativitas dan logika pemrograman lewat SYVA Software Studio menjadi produk web dan mobile yang responsif, estetis, dan kaya fungsi.</p>
+        <div class="hero-ctas">
+          <a href="#fokus" class="btn btn-primary">Jelajahi Fokus Saya</a>
+          <a href="#studio" class="btn btn-ghost">Kenali SYVA Studio</a>
+        </div>
+      </div>
+      <div class="terminal reveal">
+        <div class="terminal-bar">
+          <span></span><span></span><span></span>
+          <span class="file">profile.json</span>
+        </div>
+        <div class="terminal-body" id="typedTerminal"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="tentang">
+    <div class="wrap about-grid">
+      <div class="section-head reveal" style="margin-bottom:0;">
+        <p class="eyebrow">Profil</p>
+        <h2>Ditulis dengan kode, dijalani dengan rasa ingin tahu.</h2>
+      </div>
+      <div class="reveal">
+        <p>Seorang Web &amp; Mobile Developer yang berdomisili di Kalibeber, Wonosobo. Ketertarikan mendalam saya pada dunia teknologi mendorong saya untuk terus bereksplorasi sebagai <strong>IT Enthusiast</strong> — mencoba tools baru, memahami cara kerja sistem, dan mengasah cara berpikir lewat pemrograman.</p>
+        <p>Melalui <strong>SYVA Software Studio</strong>, saya menggabungkan kreativitas dan logika pemrograman untuk membangun pengalaman digital yang responsif, estetis, dan kaya akan fungsi — dikerjakan dengan perhatian pada detail, dari baris kode hingga tampilan akhir.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOCUS -->
+  <section id="fokus">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Fokus Kerja</p>
+        <h2>Tiga arah yang saya dalami setiap hari.</h2>
+      </div>
+      <div class="focus-list reveal">
+        <div class="focus-card">
+          <span class="mark">// web</span>
+          <h3>Pengembangan Web</h3>
+          <p>Merancang dan membangun website yang responsif, cepat diakses, serta nyaman digunakan di berbagai ukuran layar.</p>
+        </div>
+        <div class="focus-card">
+          <span class="mark">// mobile</span>
+          <h3>Pengembangan Mobile</h3>
+          <p>Menghadirkan aplikasi mobile dengan antarmuka yang estetis dan pengalaman pengguna yang mulus dari awal hingga akhir.</p>
+        </div>
+        <div class="focus-card">
+          <span class="mark">// eksplorasi</span>
+          <h3>AI & Tech Enthusiast</h3>
+          <p>Memfokuskan rasa ingin tahu pada teknologi Artificial Intelligence (AI). Secara aktif mempelajari dan mengintegrasikan asisten AI tingkat lanjut ke dalam alur kerja digital sehari-hari untuk mengeksplorasi masa depan pengembangan perangkat lunak</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STUDIO -->
+  <section id="studio">
+    <div class="mist mist-c"></div>
+    <div class="wrap studio-inner">
+      <div class="reveal">
+        <p class="eyebrow">Studio</p>
+        <h2 class="studio-mark"><span class="syva">SYVA</span> Software Studio</h2>
+        <p class="desc">SYVA Software Studio adalah wadah tempat saya memproses ide menjadi produk digital — ruang di mana desain yang estetis dan kode yang rapi berjalan beriringan.</p>
+        <p class="desc">Setiap proyek dikerjakan dengan pendekatan yang sama: fungsi yang jelas, tampilan yang enak dilihat, dan pengalaman yang terasa mulus bagi penggunanya.</p>
+      </div>
+      <div class="studio-visual reveal">
+        <div class="glyph">
+          <b>&lt;/&gt;</b>
+          responsif · estetis<br>kaya fungsi
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOCATION & CONTACT -->
+  <section id="kontak">
+    <div class="wrap">
+      <div class="geo-card reveal">
+        <p class="coord">KALIBEBER · WONOSOBO · JAWA TENGAH</p>
+        <h3>Berkarya dari dataran tinggi</h3>
+        <p>Berdomisili di Kalibeber, Wonosobo — kawasan dataran tinggi Jawa Tengah yang tenang, tempat saya menyusun ide dan mengeksekusinya menjadi kode.</p>
+      </div>
+      <div class="reveal">
+        <p class="eyebrow">Terhubung</p>
+        <h2 style="font-family:var(--font-display); font-size:clamp(1.6rem,3vw,2.2rem); margin-bottom:8px;">Mari mulai obrolan.</h2>
+        <p style="color:var(--text-muted); margin-bottom:8px;">Terbuka untuk diskusi seputar proyek web, mobile, atau sekadar bertukar pikiran soal teknologi.</p>
+        <div class="contact-links">
+          <a href="mailto:kurniawanharry165@gmail.com" class="contact-row">Email <span class="arrow">↗</span></a>
+          <a href="https://harrikr.github.io/" class="contact-row">GitHub <span class="arrow">↗</span></a>
+          <a href="https://www.instagram.com/harri_kr" class="contact-row">Instagram <span class="arrow">↗</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="year"></span> Harri Kurniawan — SYVA Software Studio</span>
+    <span class="fmark">dibangun dengan rasa ingin tahu</span>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // scroll progress bar
+  const progressBar = document.getElementById('scrollProgress');
+  function updateProgress(){
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    progressBar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', updateProgress, { passive:true });
+  updateProgress();
+
+  // mobile nav toggle
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.querySelector('.nav-links');
+  navToggle.addEventListener('click', () => {
+    const isOpen = navLinks.style.display === 'flex';
+    navLinks.style.display = isOpen ? 'none' : 'flex';
+    navLinks.style.flexDirection = 'column';
+    navLinks.style.position = 'absolute';
+    navLinks.style.top = '76px';
+    navLinks.style.left = '0';
+    navLinks.style.right = '0';
+    navLinks.style.background = '#111713';
+    navLinks.style.padding = '20px 32px';
+    navLinks.style.borderBottom = '1px solid #28352d';
+    navLinks.style.gap = '18px';
+  });
+
+  // reveal on scroll
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+
+  // typing effect for terminal card
+  const lines = [
+    ['{', ''],
+    ['  "role"', '"Owner"'],
+    ['  "base"', '"Kalibeber, Wonosobo"'],
+    ['  "studio"', '"SYVA Software Studio"'],
+    ['  "focus"', '["web", "mobile"]'],
+    ['  "status"', '"freelance"'],
+    ['}', '']
+  ];
+
+  const target = document.getElementById('typedTerminal');
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function renderStatic(){
+    target.innerHTML = lines.map(([k,v]) => {
+      if (v === '') return `<span class="p">${k}</span>`;
+      return `<span class="p">${k}</span>: <span class="s">${v}</span>`;
+    }).join('\n');
+  }
+
+  if (prefersReduced) {
+    renderStatic();
+  } else {
+    let out = '';
+    let li = 0;
+    function typeLine(){
+      if (li >= lines.length) {
+        target.innerHTML = out + '<span class="cursor"></span>';
+        return;
+      }
+      const [k, v] = lines[li];
+      const full = v === '' ? k : `${k}: ${v}`;
+      let ci = 0;
+      function typeChar(){
+        if (ci <= full.length) {
+          const partial = full.slice(0, ci);
+          let html = out;
+          if (v === '') {
+            html += `<span class="p">${partial}</span>`;
+          } else {
+            const kPart = partial.length <= k.length ? partial : k;
+            const vPart = partial.length > k.length ? partial.slice(k.length) : '';
+            html += `<span class="p">${kPart}</span>${vPart ? ': <span class="s">' + vPart.replace(/^:\s*/, '') + '</span>' : ''}`;
+          }
+          target.innerHTML = html + '<span class="cursor"></span>';
+          ci++;
+          setTimeout(typeChar, 14);
+        } else {
+          out += `<span class="p">${k}</span>${v ? ': <span class="s">' + v + '</span>' : ''}\n`;
+          li++;
+          setTimeout(typeLine, 90);
+        }
+      }
+      typeChar();
+    }
+    setTimeout(typeLine, 400);
+  }
+</script>
+
+</body>
+</html>
